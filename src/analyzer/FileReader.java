@@ -17,6 +17,6 @@ public class FileReader {
         } catch (IOException e) {
             System.out.println("File not found");
         }
-        return new byte[0];
+        return null;
     }
 }

@@ -3,6 +3,6 @@ package analyzer;
 public class Main {
     public static void main(String[] args) {
         Engine engine = new Engine(args.clone());
-        engine.searchPattern();
+        engine.doSearch();
     }
 }
