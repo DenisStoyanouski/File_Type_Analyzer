@@ -1,8 +1,10 @@
 package analyzer;
 
+import java.time.Duration;
+import java.time.temporal.ChronoUnit;
 import java.util.Arrays;
 
-public class NaiveSearchAlgo implements SearchAlgorithm{
+public class NaiveSearchAlgo implements SearchAlgorithm {
     private final String fileName;
     private final String fileType;
 
@@ -13,8 +15,9 @@ public class NaiveSearchAlgo implements SearchAlgorithm{
 
     @Override
     public void search(String pattern) {
+        long startTime = System.nanoTime();
         FileReader fr = new FileReader(fileName);
-        byte[] file = fr.getByteArray();
+        byte[] file = fr.getTextAsByteArray();
         if (file == null) {
             return;
         } else if (file.length == 0) {
@@ -24,9 +27,16 @@ public class NaiveSearchAlgo implements SearchAlgorithm{
         for (int i = 0; i < file.length - pattern.length() + 1; i++) {
             if (Arrays.equals(Arrays.copyOfRange(file, i, i + pattern.length()), pattern.getBytes())) {
                 System.out.println(fileType);
+                printTime(startTime);
                 return;
             }
         }
         System.out.println("Unknown file type");
+        printTime(startTime);
+    }
+
+    private void printTime(long startTime) {
+        long finishTime = System.nanoTime();
+        System.out.printf("It took %d seconds\n", Duration.ofNanos(finishTime - startTime).get(ChronoUnit.SECONDS));
     }
 }

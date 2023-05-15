@@ -21,12 +21,17 @@ public class Engine {
 
     public void doSearch() {
         PatternSearcher patternSearcher = new PatternSearcher();
-        switch(algoName) {
-            case "naive" : patternSearcher.setSearchAlgorithm(new NaiveSearchAlgo(fileName, fileType));
-                           patternSearcher.search(pattern);
-                           break;
-            case "KMP" :
-            default: break;
+        switch (algoName) {
+            case "naive":
+                patternSearcher.setSearchAlgorithm(new NaiveSearchAlgo(fileName, fileType));
+                patternSearcher.search(pattern);
+                break;
+            case "KMP":
+                patternSearcher.setSearchAlgorithm(new KMPSearchAlgo(fileName, fileType));
+                patternSearcher.search(pattern);
+                break;
+            default:
+                break;
         }
 
     }
