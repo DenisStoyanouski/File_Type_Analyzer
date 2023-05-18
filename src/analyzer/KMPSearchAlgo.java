@@ -32,7 +32,13 @@ public class KMPSearchAlgo implements SearchAlgorithm {
                 startOfSubstring += pattern.length();
             } else {
                 for (int i = 0; i < length; i++) {
-                    if (pattern.charAt(i) != currentSubstringOfText.charAt(i)) {
+                    boolean nextStep = pattern.charAt(i) != currentSubstringOfText.charAt(i);
+                    if (i == 0 && nextStep) {
+                        shift = 1;
+                        startOfSubstring +=shift;
+                        break;
+                    }
+                    else if (nextStep) {
                         shift = i - prefixFunction[i - 1];
                         startOfSubstring += shift;
                         break;
