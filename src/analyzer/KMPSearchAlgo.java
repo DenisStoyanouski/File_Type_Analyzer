@@ -1,21 +1,23 @@
 package analyzer;
 
+import java.io.File;
 import java.time.Duration;
 import java.time.temporal.ChronoUnit;
 
 public class KMPSearchAlgo implements SearchAlgorithm {
-    private final String fileName;
+    private final String filePath;
     private final String fileType;
 
-    public KMPSearchAlgo(String fileName, String fileType) {
-        this.fileName = fileName;
+    public KMPSearchAlgo(String filePath, String fileType) {
+        this.filePath = filePath;
         this.fileType = fileType;
     }
 
     @Override
-    public void search(String pattern) {
+    public String search(String pattern) {
+        File file = new File(filePath);
         long startTime = System.nanoTime();
-        FileReader fr = new FileReader(fileName);
+        FileReader fr = new FileReader(filePath);
         String text = fr.getTextAsString();
         int occurrence = 0;
         int startOfSubstring = 0;
@@ -38,11 +40,11 @@ public class KMPSearchAlgo implements SearchAlgorithm {
                 }
             }
         }
-        System.out.println(occurrence > 0 ? fileType : "Unknown file type");
-        printTime(startTime);
+        //printTime(startTime);
+        return occurrence > 0 ? file.getName() + ": " + fileType : file.getName() + ": Unknown file type";
     }
 
-    private static int[] getPrefixFunction(String pattern) {
+    static int[] getPrefixFunction(String pattern) {
         int[] prefixFunction = new int[pattern.length()];
         prefixFunction[0] = 0;
         for (int i = 1; i < pattern.length(); i++) {

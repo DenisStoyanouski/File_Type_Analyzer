@@ -8,7 +8,7 @@ public class PatternSearcher {
         this.searchAlgorithm = searchAlgorithm;
     }
 
-    public void search(String pattern) {
-        this.searchAlgorithm.search(pattern);
+    public String search(String pattern) {
+        return this.searchAlgorithm.search(pattern);
     }
 }
