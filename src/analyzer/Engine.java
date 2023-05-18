@@ -24,8 +24,8 @@ public class Engine {
         }
     }
 
-    void doSearch() throws InterruptedException {
-        ExecutorService executorService = Executors.newFixedThreadPool(5);
+    void doSearch() {
+        ExecutorService executorService = Executors.newFixedThreadPool(10);
         List<Callable<String>> callables = new ArrayList<>();
 
         File[] files = getFileNames();
@@ -34,7 +34,6 @@ public class Engine {
         }
         try {
             List<Future<String>> results = executorService.invokeAll(callables);
-            Thread.sleep(10000);
             for (Future future : results) {
                 if (future.isDone()) {
                     System.out.println(future.get());
