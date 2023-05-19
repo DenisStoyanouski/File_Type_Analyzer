@@ -1,26 +1,38 @@
 package analyzer;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.util.ArrayList;;
 import java.util.List;
+import java.util.Scanner;
 import java.util.concurrent.*;
 
 public class Engine {
-    //String fileName;
-    String pattern;
+    String patternFileName;
     String fileType;
-    //String algoName;
     String directoryName;
+
+    final List<Pattern> patterns = new ArrayList<>();
 
     public Engine(String[] args) {
         try {
-            //this.algoName = args[0].replace("--", "");
             this.directoryName = args[0];
-            //this.fileName = args[1];
-            this.pattern = args[1];
-            this.fileType = args[2];
+            this.patternFileName = args[1];
         } catch (ArrayIndexOutOfBoundsException e) {
             System.out.println("Not found all arguments");
+        }
+    }
+
+     void getPatterns() {
+        String pathToPatterns = "." + File.separator + "patterns.db";
+        File file = new File(pathToPatterns);
+        try (Scanner scanner = new Scanner(file)) {
+            while (scanner.hasNextLine()) {
+                String[] line = scanner.nextLine().replaceAll("\"","").split(";");
+                patterns.add(new Pattern(line[0], line[1], line[2]));
+            }
+        } catch (FileNotFoundException e) {
+            System.out.println("File with patterns not found");
         }
     }
 
@@ -57,25 +69,9 @@ public class Engine {
             public String call() throws Exception {
                 PatternSearcher patternSearcher = new PatternSearcher();
                 patternSearcher.setSearchAlgorithm(new KMPSearchAlgo(filePath, fileType));
-                String result = patternSearcher.search(pattern);
+                String result = patternSearcher.search(patterns.get(0).getPattern());
                 return result;
             }
         };
     }
-
-    /*public void doSearch() {
-        PatternSearcher patternSearcher = new PatternSearcher();
-        switch (algoName) {
-            case "naive":
-                patternSearcher.setSearchAlgorithm(new NaiveSearchAlgo(fileName, fileType));
-                patternSearcher.search(pattern);
-                break;
-            case "KMP":
-                patternSearcher.setSearchAlgorithm(new KMPSearchAlgo(fileName, fileType));
-                patternSearcher.search(pattern);
-                break;
-            default:
-                break;
-        }
-    }*/
 }
