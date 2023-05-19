@@ -33,4 +33,19 @@ public class EngineTest {
         Assert.assertNotEquals(expect, result);
     }
 
+    @Test
+    public void FirstPatternPositiveTest() {
+        engine.getPatterns();
+        String expect = "1;\"%PDF-\";\"PDF document\"";
+        String result = engine.patterns.get(0).toString();
+        Assert.assertEquals(expect, result);
+    }
+
+    @Test
+    public void FirstPatternNegativeTest() {
+        engine.getPatterns();
+        String expected = "1;\"%PDF-\";\"PD document\"";
+        String actual = engine.patterns.get(0).toString();
+        Assert.assertNotEquals(expected, actual);
+    }
 }

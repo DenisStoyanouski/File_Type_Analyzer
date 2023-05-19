@@ -9,7 +9,6 @@ import java.util.concurrent.*;
 
 public class Engine {
     String patternFileName;
-    String fileType;
     String directoryName;
 
     final List<Pattern> patterns = new ArrayList<>();
@@ -23,20 +22,8 @@ public class Engine {
         }
     }
 
-     void getPatterns() {
-        String pathToPatterns = "." + File.separator + "patterns.db";
-        File file = new File(pathToPatterns);
-        try (Scanner scanner = new Scanner(file)) {
-            while (scanner.hasNextLine()) {
-                String[] line = scanner.nextLine().replaceAll("\"","").split(";");
-                patterns.add(new Pattern(line[0], line[1], line[2]));
-            }
-        } catch (FileNotFoundException e) {
-            System.out.println("File with patterns not found");
-        }
-    }
-
     void doSearch() {
+        getPatterns();
         ExecutorService executorService = Executors.newFixedThreadPool(10);
         List<Callable<String>> callables = new ArrayList<>();
 
@@ -57,6 +44,19 @@ public class Engine {
         executorService.shutdown();
     }
 
+    void getPatterns() {
+        String pathToPatterns = "." + File.separator + patternFileName;
+        File file = new File(pathToPatterns);
+        try (Scanner scanner = new Scanner(file)) {
+            while (scanner.hasNextLine()) {
+                String[] line = scanner.nextLine().replaceAll("\"","").split(";");
+                patterns.add(new Pattern(line[0], line[1], line[2]));
+            }
+        } catch (FileNotFoundException e) {
+            System.out.println("File with patterns not found");
+        }
+    }
+
     private File[] getFileNames() {
         String pathToDirectory = "." + File.separator + directoryName;
         File directory = new File(pathToDirectory);
@@ -66,10 +66,16 @@ public class Engine {
     private Callable KMPSearch(String filePath) {
         return new Callable() {
             @Override
-            public String call() throws Exception {
-                PatternSearcher patternSearcher = new PatternSearcher();
-                patternSearcher.setSearchAlgorithm(new KMPSearchAlgo(filePath, fileType));
-                String result = patternSearcher.search(patterns.get(0).getPattern());
+            public String call() {
+                String result = "";
+                for (int i = patterns.size() - 1; i >= 0; i--) {
+                    PatternSearcher patternSearcher = new PatternSearcher();
+                    patternSearcher.setSearchAlgorithm(new KMPSearchAlgo(filePath, patterns.get(i).getFileType()));
+                    result = patternSearcher.search(patterns.get(i).getPattern());
+                    if (!result.contains("Unknown file type")) {
+                        break;
+                    }
+                }
                 return result;
             }
         };
