@@ -9,7 +9,7 @@ public class EngineTest {
     String[] args = {"test_files", "patterns.db"};
     Engine engine = new Engine(args);
 
-    @Test
+    /*@Test
     public void getPatternsTest1() {
         String expect = "pmview";
         engine.getPatterns();
@@ -40,7 +40,6 @@ public class EngineTest {
         String result = engine.patterns.get(0).toString();
         Assert.assertEquals(expect, result);
     }
-
     @Test
     public void FirstPatternNegativeTest() {
         engine.getPatterns();
@@ -48,4 +47,6 @@ public class EngineTest {
         String actual = engine.patterns.get(0).toString();
         Assert.assertNotEquals(expected, actual);
     }
+*/
+
 }

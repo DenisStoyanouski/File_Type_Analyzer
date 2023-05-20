@@ -7,7 +7,7 @@ import java.io.File;
 import java.util.Arrays;
 
 public class KMPSearchAlgoTest {
-    KMPSearchAlgo test = new KMPSearchAlgo("./test.txt", "txt type");
+    KMPSearchAlgo test = new KMPSearchAlgo("./test/analyzer/test.txt", "txt type");
 
     @Test
     public void getPrefixFunctionTest1() {
