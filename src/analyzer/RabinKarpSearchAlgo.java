@@ -24,7 +24,7 @@ public class RabinKarpSearchAlgo implements SearchAlgorithm {
         int patternLength = pattern.length();
 
         for (int i = text.length() - patternLength; i >= pattern.length() - 1; i--) {
-            String substring = text.substring(i , i + patternLength);
+            String substring = text.substring(i, i + patternLength);
             substringHash = getPolynomialHashFunction(3, 11, substring);
             equalsFlag = patternHash == substringHash;
             if (equalsFlag) {
