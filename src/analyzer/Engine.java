@@ -70,7 +70,7 @@ public class Engine {
                 String result = "";
                 for (int i = patterns.size() - 1; i >= 0; i--) {
                     PatternSearcher patternSearcher = new PatternSearcher();
-                    patternSearcher.setSearchAlgorithm(new KMPSearchAlgo(filePath, patterns.get(i).getFileType()));
+                    patternSearcher.setSearchAlgorithm(new RabinKarpSearchAlgo(filePath, patterns.get(i).getFileType()));
                     result = patternSearcher.search(patterns.get(i).getPattern());
                     if (!result.contains("Unknown file type")) {
                         break;
