@@ -21,16 +21,17 @@ public class RabinKarpSearchAlgo implements SearchAlgorithm {
         String text = fr.getTextAsString();
         boolean equalsFlag = false;
         int substringHash;
-        int patternHash = getPolynomialHashFunction(3, 11, pattern);
+        //int patternHash = getPolynomialHashFunction(3, 11, pattern);
+        int patternHash = pattern.hashCode();
         int patternLength = pattern.length();
 
         if (pattern.length() <= text.length()) {
-            for (int i = text.length() - patternLength; i >= pattern.length() - 1; i--) {
+            for (int i = text.length() - patternLength; i >= 0; i--) {
                 String substring = text.substring(i, i + patternLength);
-                substringHash = getPolynomialHashFunction(3, 11, substring);
+                //substringHash = getPolynomialHashFunction(3, 11, substring);
+                substringHash = substring.hashCode();
                 equalsFlag = patternHash == substringHash;
-                if (equalsFlag) {
-                    equalsFlag = Objects.equals(substring, pattern);
+                if (equalsFlag && Objects.equals(substring, pattern)) {
                     break;
                 }
             }
@@ -42,16 +43,8 @@ public class RabinKarpSearchAlgo implements SearchAlgorithm {
         char[] arr = str.toCharArray();
         int hashValue = 0;
         for (int i = 0; i < arr.length; i++) {
-            hashValue += (arr[i] - 64) * Math.pow(constant, i);
+            hashValue += arr[i] * Math.pow(constant, i);
         }
         return Math.floorMod(hashValue, mod);
-    }
-
-    static boolean isEqualSymbolBySymbol (String pattern, String substring) {
-        char[] patternArr = pattern.toCharArray();
-        char[] substringArr = substring.toCharArray();
-        Arrays.sort(patternArr);
-        Arrays.sort(substringArr);
-        return Arrays.equals(patternArr, substringArr);
     }
 }
